@@ -11,11 +11,17 @@ df = pd.DataFrame(lines, columns=["add_cycles", "v"]).replace(cycles).fillna(0).
 df["cycle"] = df["add_cycles"].cumsum()
 df["v_cumsum"] = 1 + df["v"].cumsum()
 
-signal_strengths = 0
-for cycle in range(20, 220+1, 40):
-    X = df.loc[df["cycle"] < cycle, "v_cumsum"].tail(1).values[0]
-    signal_strength = X * cycle
-    signal_strengths += signal_strength
-    print(f"During cycle {cycle}, X is {X} and the signal strenght is thus {signal_strength}")
-
-print(f"The sum of the signal strengths is {signal_strengths}")
+sprite = [0, 1, 2]
+all_rows = []
+for i in range(6):
+    row = ''
+    sprite = [0, 1, 2]
+    for j in range(0, 40):
+        if j in sprite:
+            row += '#'
+        else:
+            row += '.'
+        if (i*40)+j+1 in list(df["cycle"]):
+            X = df.loc[df["cycle"] == (i*40)+j+1, "v_cumsum"].values[0]
+            sprite = [X-1, X, X+1]
+    print(row)
