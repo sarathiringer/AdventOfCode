@@ -37,8 +37,13 @@ for line in lines:
             if distance.euclidean(rope[i-1], rope[i]) < 1.5:
                 continue
             else:
-                possible_new_place = [v(rope[i-1]) for k, v in changes.items()]
-                rope[i] = possible_new_place[np.argmin([distance.euclidean(rope[i], t) for t in possible_new_place])]
+                possible_new_place = [v(rope[i-1]) for k, v in changes.items()] # Why use these
+                distances = [distance.euclidean(rope[i], t) for t in possible_new_place]
+                distances.sort()
+                if distances[0] == distances[1]:
+                    rope[i] = tuple((np.array(rope[i])+np.array(rope[i-1]))/2)
+                else:
+                    rope[i] = possible_new_place[np.argmin([distance.euclidean(rope[i], t) for t in possible_new_place])]
         
         if rope[-1] not in tail_visits:
             tail_visits.append(rope[-1])
