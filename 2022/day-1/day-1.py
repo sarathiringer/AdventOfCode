@@ -7,7 +7,7 @@ for line in lines:
     line = line.strip()
     if line:
         cal += int(line)
-    else: 
+    else:
         calories.append(cal)
         cal = 0
 
